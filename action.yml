@@ -9,6 +9,10 @@ inputs:
     description: 'Path to the cobertura file.'
     required: true
     default: 'coverage.xml'
+  prefix_path:
+    description: 'Prefix path to add to each filename.'
+    required: false
+    default: ''
   skip_covered:
     description: 'If files with 100% should be skipped from report.'
     required: true
@@ -48,6 +52,7 @@ inputs:
     description: 'Source directory used for link_missing_lines.'
     required: false
     default: ''
+    deprecationMessage: 'Please switch to prefix_path instead (this input is forward to prefix_path).'
   only_changed_files:
     description: 'Only show coverage for changed files. (only if a PR is present)'
     required: true
@@ -56,12 +61,41 @@ inputs:
     description: 'Pull request number associated with the report. This property should be used when workflow trigger is different than pull_request.'
     required: false
     default: ''
+  add_pr_comment:
+    description: 'Add PR comment with coverage report.'
+    required: false
+    default: true
+  add_check:
+    description: 'Add check with coverage report.'
+    required: false
+    default: true
   report_name:
     description: 'Use a unique name for the report and comment.'
     required: false
     default: ''
+  header_text:
+    description: 'Header markdown text which is displayed before the coverage table'
+    required: false
+    default: ''
+  coverage_url:
+    description: 'URL to coverage report.'
+    required: false
+    default: ''
+outputs:
+  comment:
+    description: 'Markdown with coverage report.'
+  url_html:
+    description: 'URL to check containing coverage report in HTML.'
+  lines_total:
+    description: 'Number of total lines.'
+  lines_covered:
+    description: 'Number of covered lines.'
+  branches_total:
+    description: 'Number of total branches.'
+  branches_covered:
+    description: 'Number of covered branches.'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'percent'

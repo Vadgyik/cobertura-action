@@ -39,6 +39,10 @@ The GITHUB_TOKEN. Defaults to `${{github.token}}`
 
 The path to the cobertura report. Defaults to `coverage.xml`. Glob pattern is supported, for example `coverage/*.xml`.
 
+## `prefix_path`
+
+This prefix is added to every `filename` within the cobertura report. This can resolve issues with `link_missing_lines` URLs and `only_changed_files`.
+
 ### `skip_covered`
 
 If files with 100% coverage should be ignored. Defaults to `true`.
@@ -80,11 +84,6 @@ Default is no crop.
 Link missing line numbers. This only has an effect when `show_missing` is set to `true`.
 Defaults to `false`.
 
-### `link_missing_lines_source_dir`
-
-Allows specifying a source directory for `link_missing_lines`, that will be inserted
-into the resulting URLs, in-between the commit hash and the file path.
-
 ### `only_changed_files`
 
 Only show coverage for changed files.
@@ -98,6 +97,30 @@ Use a unique name for the report and comment.
 Pull request number associated with the report. This property should be used when workflow trigger is different than `pull_request`.
 
 If no pull request can determine the action will skip adding the comment.
+
+### `add_pr_comment` **Optional**
+
+### `add_check` **Optional**
+
+### `header_text` **Optional**
+
+### `coverage_url` **Optional**
+
+
+## Outputs
+
+### `comment`
+
+### `url_html`
+
+### `lines_total`
+
+### `lines_covered`
+
+### `branches_total`
+
+### `branches_covered`
+
 
 ## Example usage
 

@@ -2,6 +2,7 @@ const fs = require("fs").promises;
 const xml2js = require("xml2js");
 const util = require("util");
 const glob = require("glob-promise");
+const pathLib = require("path");
 const parseString = util.promisify(xml2js.parseString);
 
 /**
@@ -24,7 +25,10 @@ async function readCoverageFromFile(path, options) {
     .map((klass) => {
       return {
         ...calculateRates(klass),
-        filename: klass["filename"],
+        filename:
+          options.prefixPath != null
+            ? pathLib.join(options.prefixPath, klass["filename"])
+            : klass["filename"],
         name: klass["name"],
         missing: missingLines(klass),
       };
@@ -32,6 +36,7 @@ async function readCoverageFromFile(path, options) {
     .filter((file) => options.skipCovered === false || file.total < 100);
   return {
     ...calculateRates(coverage),
+    ...calculateLinesAndBranches(coverage),
     files,
   };
 }
@@ -106,6 +111,19 @@ function calculateRates(element) {
     total,
     line,
     branch,
+  };
+}
+
+function calculateLinesAndBranches(element) {
+  const validLines = parseInt(element["lines-valid"]) || 0;
+  const coveredLines = parseInt(element["lines-covered"]) || 0;
+  const validBranches = parseInt(element["branches-valid"]) || 0;
+  const coveredBranches = parseInt(element["branches-covered"]) || 0;
+  return {
+    validLines,
+    coveredLines,
+    validBranches,
+    coveredBranches,
   };
 }
 
