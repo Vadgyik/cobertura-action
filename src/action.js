@@ -385,6 +385,9 @@ async function pullRequestInfo(payload = {}) {
       pullRequestNumber = pullRequest.number;
       commit = pullRequest.head.sha;
     }
+  } else if (payload.release) {
+    commit = github.context.sha;
+    core.info("Release (action=${payload.action})");
   } else if (payload.after) {
     core.info("Use payload.after as commit");
     commit = payload.after;
